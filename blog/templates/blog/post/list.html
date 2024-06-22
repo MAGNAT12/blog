@@ -1,13 +1,11 @@
 {% extends 'blog/base.html' %}
 
-{% block title %}
-My blog
-{% endblock %}
+{% block title %}My blog{% endblock %}
 
 {% block content %}
 {% for post in posts %}
 <h2>
-    <a href="{% url 'blog:post_detail' post.id %}">
+    <a href="{{ post.get_absolute_url }}">
         {{ post.title }}
     </a>
 </h2>
@@ -16,4 +14,5 @@ My blog
 </p>
 {{ post.body|truncatewords:30|linebreaks }}
 {% endfor %}
+{% include "blog/paginator.html" with page=posts%}
 {% endblock %}
