@@ -1,18 +1,21 @@
-{% extends 'blog/base.html' %}
+{% extends "blog/base.html" %}
 
-{% block title %}My blog{% endblock %}
+
+{% block title %}Share a post{% endblock %}
 
 {% block content %}
-{% for post in posts %}
-<h2>
-    <a href="{{ post.get_absolute_url }}">
-        {{ post.title }}
-    </a>
-</h2>
-<p class="date">
-    Published {{ post.publish }} by {{ post.author }}
+{% if sent %}
+<h1>E-mail successfully sent</h1>
+<p>
+    "{{ post.title }}" was successfully sent
+    to {{ form.cleaned_data.to }}.
 </p>
-{{ post.body|truncatewords:30|linebreaks }}
-{% endfor %}
-{% include "blog/paginator.html" with page=posts%}
+{% else %}
+<h1>Share "{{ post.title }}" by e-mail</h1>
+<form method="post">
+    {{ form.as_p }}
+    {% csrf_token %}
+    <input type="submit" value="Send e-mail">
+</form>
+{% endif %}
 {% endblock %}
